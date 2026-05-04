@@ -9,253 +9,329 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    html, body { height: 100%; overflow: hidden; }
     body {
       font-family: 'Poppins', sans-serif;
       background: #0d0017;
       color: #e0d4f0;
-      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* ─── Tokens ─────────────────────────────────────────────────────────── */
     :root {
-      --purple:   #3d1152;
+      --purple:     #3d1152;
       --purple-mid: #5a1f76;
-      --teal:     #2ed9c3;
-      --blue:     #00b5e2;
-      --dark:     #0d0017;
-      --card-bg:  #1a0030;
-      --border:   rgba(255,255,255,.08);
+      --teal:       #2ed9c3;
+      --blue:       #00b5e2;
+      --dark:       #0d0017;
+      --panel-bg:   #100020;
+      --border:     rgba(255,255,255,.08);
     }
 
-    /* ─── Top bar ────────────────────────────────────────────────────────── */
+    /* ── Topbar ─────────────────────────────────────────────────── */
     .topbar {
-      height: 56px;
-      background: rgba(61,17,82,.95);
+      height: 46px;
+      background: rgba(61,17,82,.97);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      padding: 0 32px;
-      gap: 12px;
-      position: sticky;
-      top: 0;
+      padding: 0 14px;
+      gap: 10px;
+      flex-shrink: 0;
       z-index: 100;
     }
     .topbar-logo {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
-      color: var(--white, #fff);
-      letter-spacing: -0.5px;
+      color: #fff;
+      letter-spacing: -.5px;
     }
     .topbar-logo span { color: var(--teal); }
-    .topbar-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
-    .topbar-sub {
-      font-size: 12px;
-      color: rgba(255,255,255,.35);
-      font-weight: 400;
-    }
+    .topbar-sep { width: 1px; height: 16px; background: var(--border); }
+    .topbar-sub { font-size: 11px; color: rgba(255,255,255,.28); }
+    .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 6px; }
 
-    /* ─── Layout ─────────────────────────────────────────────────────────── */
-    .layout {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      min-height: calc(100vh - 56px);
-    }
-
-    /* ─── Sidebar ────────────────────────────────────────────────────────── */
-    .sidebar {
-      border-right: 1px solid var(--border);
-      padding: 24px 0;
-    }
-    .sidebar-section {
-      padding: 0 16px;
-      margin-bottom: 6px;
-    }
-    .sidebar-label {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: rgba(255,255,255,.3);
-      padding: 0 8px;
-      margin-bottom: 8px;
-    }
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background .15s;
-      border: none;
-      background: none;
-      width: 100%;
-      text-align: left;
-    }
-    .sidebar-item:hover { background: rgba(255,255,255,.06); }
-    .sidebar-item.active { background: rgba(61,17,82,.8); }
-    .sidebar-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--teal);
-      flex-shrink: 0;
-    }
-    .sidebar-item-name {
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,.85);
-    }
-    .sidebar-item-count {
-      margin-left: auto;
-      font-size: 11px;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(255,255,255,.3);
-      background: rgba(255,255,255,.07);
-      border-radius: 10px;
-      padding: 1px 7px;
-    }
-
-    /* ─── Main ───────────────────────────────────────────────────────────── */
-    .main { padding: 36px 40px; }
-
-    /* ─── Brief header ───────────────────────────────────────────────────── */
-    .brief-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 32px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .brief-name {
-      font-size: 26px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-    .brief-meta {
-      font-size: 13px;
-      color: rgba(255,255,255,.45);
-    }
-    .brief-meta strong {
-      color: rgba(255,255,255,.65);
-      font-weight: 500;
-    }
-
-    /* ─── Version cards ──────────────────────────────────────────────────── */
-    .versions-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: rgba(255,255,255,.3);
-      margin-bottom: 16px;
-    }
-    .versions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-    }
-    .version-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 22px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .version-card:hover {
-      border-color: rgba(46,217,195,.35);
-      box-shadow: 0 0 0 1px rgba(46,217,195,.15), 0 8px 32px rgba(0,0,0,.3);
-    }
-    .version-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .version-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--teal);
-      background: rgba(46,217,195,.12);
-      border: 1px solid rgba(46,217,195,.25);
-      border-radius: 6px;
-      padding: 3px 10px;
-    }
-    .status-dot {
+    .btn-split {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 11px;
-      color: rgba(255,255,255,.4);
-    }
-    .status-dot::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--teal);
-    }
-    .version-note {
-      font-size: 13px;
+      padding: 4px 11px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
       color: rgba(255,255,255,.6);
-      line-height: 1.5;
-    }
-    .version-date {
+      font-family: 'Poppins', sans-serif;
       font-size: 11px;
-      font-family: 'JetBrains Mono', monospace;
-      color: rgba(255,255,255,.25);
-    }
-    .version-open {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 18px;
-      border-radius: 8px;
-      background: var(--purple);
-      border: 1px solid rgba(255,255,255,.12);
-      color: rgba(255,255,255,.85);
-      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
-      text-decoration: none;
-      transition: background .2s, border-color .2s, color .2s;
-      align-self: flex-start;
+      transition: background .14s, border-color .14s, color .14s;
     }
-    .version-open:hover {
-      background: var(--purple-mid);
-      border-color: rgba(255,255,255,.2);
+    .btn-split:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.14);
       color: #fff;
     }
-    .version-open svg { opacity: .6; }
+    .btn-split.active {
+      background: rgba(46,217,195,.1);
+      border-color: rgba(46,217,195,.28);
+      color: var(--teal);
+    }
 
-    /* ─── Empty state ────────────────────────────────────────────────────── */
-    .empty-state {
+    /* ── Layout ─────────────────────────────────────────────────── */
+    .layout {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────────────── */
+    .sidebar {
+      width: 200px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 14px 0 0;
+      background: #080012;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+    .sidebar-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: rgba(255,255,255,.22);
+      padding: 0 14px;
+      margin-bottom: 10px;
+    }
+
+    .brief-section { margin-bottom: 2px; }
+    .brief-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      cursor: pointer;
+      user-select: none;
+      transition: background .12s;
+    }
+    .brief-header:hover { background: rgba(255,255,255,.04); }
+    .brief-arrow {
+      flex-shrink: 0;
+      color: rgba(255,255,255,.25);
+      transition: transform .15s;
+    }
+    .brief-arrow.collapsed { transform: rotate(-90deg); }
+    .brief-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,.72);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brief-count {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.05);
+      border-radius: 8px;
+      padding: 1px 5px;
+    }
+
+    .version-list { padding: 1px 0 6px; }
+    .version-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px 5px 26px;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      border: none;
+      border-left: 2px solid transparent;
+      background: none;
+      color: inherit;
+      transition: background .1s, border-left-color .1s;
+    }
+    .version-item:hover { background: rgba(255,255,255,.05); }
+    .version-item.in-panel { border-left-color: rgba(46,217,195,.5); }
+
+    .v-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(46,217,195,.45);
+      flex-shrink: 0;
+    }
+    .v-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,.78);
+    }
+    .v-date {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,.18);
+      flex: 1;
+    }
+    .v-panels { display: flex; gap: 3px; }
+    .v-panel-badge {
+      font-size: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      border-radius: 3px;
+      padding: 1px 4px;
+      line-height: 1.4;
+    }
+    .v-panel-badge.pa { background: rgba(46,217,195,.18); color: var(--teal); }
+    .v-panel-badge.pb { background: rgba(0,181,226,.18); color: var(--blue); }
+
+    /* ── Workspace ───────────────────────────────────────────────── */
+    .workspace {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── Panel ───────────────────────────────────────────────────── */
+    .panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .panel-titlebar {
+      height: 32px;
+      background: #0e001e;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 6px 0 8px;
+      gap: 7px;
+      flex-shrink: 0;
+      cursor: pointer;
+      user-select: none;
+      transition: border-bottom-color .15s;
+    }
+    .panel.focused .panel-titlebar { border-bottom-color: var(--teal); }
+
+    .panel-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      width: 16px; height: 16px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    #panel-a .panel-id { background: rgba(46,217,195,.14); color: var(--teal); }
+    #panel-b .panel-id { background: rgba(0,181,226,.14); color: var(--blue); }
+
+    .panel-title {
+      flex: 1;
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,.5);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pt-brief { color: rgba(255,255,255,.65); }
+    .pt-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--teal);
+      background: rgba(46,217,195,.1);
+      border: 1px solid rgba(46,217,195,.2);
+      border-radius: 4px;
+      padding: 0px 6px;
+    }
+
+    .panel-actions { display: flex; gap: 2px; margin-left: auto; }
+    .panel-btn {
+      width: 24px; height: 24px;
+      border-radius: 4px;
+      border: none;
+      background: none;
+      color: rgba(255,255,255,.28);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .1s, color .1s;
+    }
+    .panel-btn:hover:not(:disabled) {
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.75);
+    }
+    .panel-btn:disabled { opacity: .2; cursor: default; }
+
+    .panel-empty {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 50vh;
-      color: rgba(255,255,255,.25);
-      text-align: center;
       gap: 12px;
+      color: rgba(255,255,255,.12);
     }
-    .empty-state .icon { font-size: 48px; opacity: .4; }
-    .empty-state p { font-size: 14px; }
+    .panel-empty p { font-size: 12px; }
+
+    .panel-frame {
+      flex: 1;
+      border: none;
+      width: 100%;
+      background: #fff;
+      display: none;
+    }
+
+    /* ── Divider ─────────────────────────────────────────────────── */
+    .panel-divider {
+      width: 4px;
+      background: rgba(255,255,255,.05);
+      cursor: col-resize;
+      flex-shrink: 0;
+      display: none;
+      position: relative;
+      transition: background .14s;
+    }
+    .panel-divider::after {
+      content: '';
+      position: absolute;
+      inset: 0 -5px;
+    }
+    .panel-divider:hover, .panel-divider.dragging {
+      background: rgba(46,217,195,.35);
+    }
   </style>
 </head>
 <body>
 
-<!-- Top bar -->
+<!-- Topbar -->
 <div class="topbar">
   <div class="topbar-logo">agile<span>·</span>web</div>
   <div class="topbar-sep"></div>
   <div class="topbar-sub">web page generator</div>
+  <div class="topbar-actions">
+    <button class="btn-split" id="btn-split">
+      <svg id="icon-split" viewBox="0 0 20 18" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1" y="1" width="7.5" height="16" rx="1.5"/>
+        <rect x="11.5" y="1" width="7.5" height="16" rx="1.5"/>
+      </svg>
+      <span id="split-label">Split view</span>
+    </button>
+  </div>
 </div>
 
 <!-- Layout -->
@@ -263,86 +339,261 @@
 
   <!-- Sidebar -->
   <nav class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Briefs</div>
-      <div id="sidebar-list"></div>
-    </div>
+    <div class="sidebar-label">Briefs</div>
+    <div id="brief-list"></div>
   </nav>
 
-  <!-- Main -->
-  <main class="main" id="main-panel">
-    <div class="empty-state">
-      <div class="icon">📄</div>
-      <p>Selecciona un brief para ver sus versiones</p>
-    </div>
-  </main>
+  <!-- Workspace -->
+  <div class="workspace" id="workspace">
 
+    <!-- Panel A -->
+    <div class="panel focused" id="panel-a" data-panel="a">
+      <div class="panel-titlebar" id="titlebar-a">
+        <span class="panel-id">A</span>
+        <span class="panel-title" id="ptitle-a">—</span>
+        <div class="panel-actions">
+          <button class="panel-btn" id="popout-a" title="Abrir en nueva pestaña" disabled>
+            <svg viewBox="0 0 14 14" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V8"/>
+              <path d="M9 1h4v4M13 1l-6 6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="panel-empty" id="empty-a">
+        <svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1">
+          <rect x="4" y="4" width="40" height="40" rx="4" opacity=".4"/>
+          <path d="M16 24h16M24 16v16" opacity=".25"/>
+        </svg>
+        <p>Selecciona una versión del sidebar</p>
+      </div>
+      <iframe class="panel-frame" id="frame-a"></iframe>
+    </div>
+
+    <!-- Divider -->
+    <div class="panel-divider" id="divider"></div>
+
+    <!-- Panel B -->
+    <div class="panel" id="panel-b" data-panel="b" style="display:none">
+      <div class="panel-titlebar" id="titlebar-b">
+        <span class="panel-id">B</span>
+        <span class="panel-title" id="ptitle-b">—</span>
+        <div class="panel-actions">
+          <button class="panel-btn" id="popout-b" title="Abrir en nueva pestaña" disabled>
+            <svg viewBox="0 0 14 14" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V8"/>
+              <path d="M9 1h4v4M13 1l-6 6"/>
+            </svg>
+          </button>
+          <button class="panel-btn" id="close-b" title="Cerrar panel">
+            <svg viewBox="0 0 14 14" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <path d="M2 2l10 10M12 2L2 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="panel-empty" id="empty-b">
+        <svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1">
+          <rect x="4" y="4" width="40" height="40" rx="4" opacity=".4"/>
+          <path d="M16 24h16M24 16v16" opacity=".25"/>
+        </svg>
+        <p>Selecciona una versión del sidebar</p>
+      </div>
+      <iframe class="panel-frame" id="frame-b"></iframe>
+    </div>
+
+  </div>
 </div>
 
 <script src="portal-data.js"></script>
 <script>
   const briefs = window.PORTAL.briefs;
-  let active = null;
+  let splitMode = false;
+  let focusedPanel = 'a';
+  const panelLoaded = { a: null, b: null };
 
-  // ── Sidebar ──────────────────────────────────────────────────────────────
-  const sidebarList = document.getElementById('sidebar-list');
+  // ── Sidebar ────────────────────────────────────────────────────────────────
+  function buildSidebar() {
+    const list = document.getElementById('brief-list');
+    briefs.forEach(brief => {
+      const section = document.createElement('div');
+      section.className = 'brief-section';
 
-  briefs.forEach((brief, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'sidebar-item' + (idx === 0 ? ' active' : '');
-    btn.innerHTML = `
-      <span class="sidebar-dot"></span>
-      <span class="sidebar-item-name">${brief.name}</span>
-      <span class="sidebar-item-count">${brief.versions.length}</span>
-    `;
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderBrief(brief);
+      const header = document.createElement('div');
+      header.className = 'brief-header';
+      header.innerHTML = `
+        <svg class="brief-arrow" viewBox="0 0 10 7" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M1 1.5l4 4 4-4"/>
+        </svg>
+        <span class="brief-name">${brief.name}</span>
+        <span class="brief-count">${brief.versions.length}</span>
+      `;
+
+      const vList = document.createElement('div');
+      vList.className = 'version-list';
+
+      brief.versions.forEach(version => {
+        const btn = document.createElement('button');
+        btn.className = 'version-item';
+        btn.id = `vitem-${brief.id}-${version.id}`;
+        // Show only MM-DD from date
+        const dateShort = version.date ? version.date.slice(5) : '';
+        btn.innerHTML = `
+          <span class="v-dot"></span>
+          <span class="v-label">${version.label}</span>
+          <span class="v-date">${dateShort}</span>
+          <span class="v-panels" id="vpanels-${brief.id}-${version.id}"></span>
+        `;
+        btn.addEventListener('click', () => loadVersion(focusedPanel, brief, version));
+        vList.appendChild(btn);
+      });
+
+      let collapsed = false;
+      header.addEventListener('click', () => {
+        collapsed = !collapsed;
+        vList.style.display = collapsed ? 'none' : '';
+        header.querySelector('.brief-arrow').classList.toggle('collapsed', collapsed);
+      });
+
+      section.appendChild(header);
+      section.appendChild(vList);
+      list.appendChild(section);
     });
-    sidebarList.appendChild(btn);
-  });
-
-  // ── Render brief ──────────────────────────────────────────────────────────
-  function renderBrief(brief) {
-    const panel = document.getElementById('main-panel');
-
-    const versionsHtml = brief.versions.map(v => `
-      <div class="version-card">
-        <div class="version-top">
-          <span class="version-badge">${v.label}</span>
-          <span class="status-dot">${v.status}</span>
-        </div>
-        <p class="version-note">${v.note}</p>
-        <span class="version-date">${v.date}</span>
-        <a class="version-open" href="${v.path}" target="_blank">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15,3 21,3 21,9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-          Abrir página
-        </a>
-      </div>
-    `).join('');
-
-    panel.innerHTML = `
-      <div class="brief-header">
-        <div>
-          <div class="brief-name">${brief.name}</div>
-          <div class="brief-meta">
-            ${brief.description}<br>
-            <strong>Cliente:</strong> ${brief.client}
-          </div>
-        </div>
-      </div>
-      <div class="versions-label">Versiones · branches</div>
-      <div class="versions-grid">${versionsHtml}</div>
-    `;
   }
 
-  // Auto-load first brief
-  if (briefs.length > 0) renderBrief(briefs[0]);
+  // ── Load version ───────────────────────────────────────────────────────────
+  function loadVersion(panelId, brief, version) {
+    const frame  = document.getElementById(`frame-${panelId}`);
+    const ptitle = document.getElementById(`ptitle-${panelId}`);
+    const empty  = document.getElementById(`empty-${panelId}`);
+    const popout = document.getElementById(`popout-${panelId}`);
+
+    frame.src = version.path;
+    ptitle.innerHTML = `<span class="pt-brief">${brief.name}</span><span class="pt-badge">${version.label}</span>`;
+    empty.style.display = 'none';
+    frame.style.display = 'block';
+    popout.disabled = false;
+    popout.onclick = () => window.open(version.path, '_blank');
+
+    panelLoaded[panelId] = { brief, version };
+    updateIndicators();
+    focusPanel(panelId);
+  }
+
+  // ── Panel focus ────────────────────────────────────────────────────────────
+  function focusPanel(id) {
+    focusedPanel = id;
+    ['a', 'b'].forEach(p => {
+      document.getElementById(`panel-${p}`).classList.toggle('focused', p === id);
+    });
+  }
+
+  ['a', 'b'].forEach(id => {
+    document.getElementById(`panel-${id}`).addEventListener('mousedown', e => {
+      if (e.target.closest('.panel-btn')) return;
+      focusPanel(id);
+    });
+  });
+
+  // ── Sidebar indicators ─────────────────────────────────────────────────────
+  function updateIndicators() {
+    document.querySelectorAll('.v-panels').forEach(el => el.innerHTML = '');
+    document.querySelectorAll('.version-item').forEach(el => el.classList.remove('in-panel'));
+
+    ['a', 'b'].forEach(pid => {
+      const s = panelLoaded[pid];
+      if (!s) return;
+      const vpEl = document.getElementById(`vpanels-${s.brief.id}-${s.version.id}`);
+      if (vpEl) {
+        const badge = document.createElement('span');
+        badge.className = `v-panel-badge p${pid}`;
+        badge.textContent = pid.toUpperCase();
+        vpEl.appendChild(badge);
+      }
+      const itemEl = document.getElementById(`vitem-${s.brief.id}-${s.version.id}`);
+      if (itemEl) itemEl.classList.add('in-panel');
+    });
+  }
+
+  // ── Split toggle ───────────────────────────────────────────────────────────
+  const btnSplit   = document.getElementById('btn-split');
+  const splitLabel = document.getElementById('split-label');
+  const iconSplit  = document.getElementById('icon-split');
+  const panelBEl   = document.getElementById('panel-b');
+  const dividerEl  = document.getElementById('divider');
+  const panelAEl   = document.getElementById('panel-a');
+
+  btnSplit.addEventListener('click', () => {
+    splitMode = !splitMode;
+
+    if (splitMode) {
+      panelBEl.style.display = 'flex';
+      dividerEl.style.display = 'block';
+      panelAEl.style.flex = '1';
+      panelAEl.style.width = '';
+      panelBEl.style.flex = '1';
+      focusPanel('b');
+    } else {
+      panelBEl.style.display = 'none';
+      dividerEl.style.display = 'none';
+      panelAEl.style.flex = '1';
+      panelAEl.style.width = '';
+      // Reset panel B
+      const frameB = document.getElementById('frame-b');
+      frameB.src = 'about:blank';
+      frameB.style.display = 'none';
+      document.getElementById('empty-b').style.display = '';
+      document.getElementById('ptitle-b').textContent = '—';
+      document.getElementById('popout-b').disabled = true;
+      panelLoaded.b = null;
+      updateIndicators();
+      focusPanel('a');
+    }
+
+    btnSplit.classList.toggle('active', splitMode);
+    splitLabel.textContent = splitMode ? 'Single view' : 'Split view';
+    iconSplit.innerHTML = splitMode
+      ? `<rect x="2" y="1" width="16" height="16" rx="1.5"/>`
+      : `<rect x="1" y="1" width="7.5" height="16" rx="1.5"/><rect x="11.5" y="1" width="7.5" height="16" rx="1.5"/>`;
+  });
+
+  document.getElementById('close-b').addEventListener('click', () => {
+    if (splitMode) btnSplit.click();
+  });
+
+  // ── Resizable divider ──────────────────────────────────────────────────────
+  let isResizing = false, startX = 0, startW = 0;
+
+  dividerEl.addEventListener('mousedown', e => {
+    e.preventDefault();
+    isResizing = true;
+    startX = e.clientX;
+    startW = panelAEl.offsetWidth;
+    dividerEl.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (!isResizing) return;
+    const total = document.getElementById('workspace').offsetWidth - 4;
+    const newW = Math.max(180, Math.min(total - 180, startW + e.clientX - startX));
+    panelAEl.style.flex = 'none';
+    panelAEl.style.width = newW + 'px';
+    panelBEl.style.flex = '1';
+    panelBEl.style.width = '';
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isResizing) return;
+    isResizing = false;
+    dividerEl.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+
+  // ── Init ───────────────────────────────────────────────────────────────────
+  buildSidebar();
 </script>
 </body>
 </html>
