@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>agile-web · portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0d0017;
+      color: #e0d4f0;
+      min-height: 100vh;
+    }
+
+    /* ─── Tokens ─────────────────────────────────────────────────────────── */
+    :root {
+      --purple:   #3d1152;
+      --purple-mid: #5a1f76;
+      --teal:     #2ed9c3;
+      --blue:     #00b5e2;
+      --dark:     #0d0017;
+      --card-bg:  #1a0030;
+      --border:   rgba(255,255,255,.08);
+    }
+
+    /* ─── Top bar ────────────────────────────────────────────────────────── */
+    .topbar {
+      height: 56px;
+      background: rgba(61,17,82,.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--white, #fff);
+      letter-spacing: -0.5px;
+    }
+    .topbar-logo span { color: var(--teal); }
+    .topbar-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+    .topbar-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,.35);
+      font-weight: 400;
+    }
+
+    /* ─── Layout ─────────────────────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* ─── Sidebar ────────────────────────────────────────────────────────── */
+    .sidebar {
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+    }
+    .sidebar-section {
+      padding: 0 16px;
+      margin-bottom: 6px;
+    }
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: rgba(255,255,255,.3);
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background .15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .sidebar-item:hover { background: rgba(255,255,255,.06); }
+    .sidebar-item.active { background: rgba(61,17,82,.8); }
+    .sidebar-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+    }
+    .sidebar-item-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,.85);
+    }
+    .sidebar-item-count {
+      margin-left: auto;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,.3);
+      background: rgba(255,255,255,.07);
+      border-radius: 10px;
+      padding: 1px 7px;
+    }
+
+    /* ─── Main ───────────────────────────────────────────────────────────── */
+    .main { padding: 36px 40px; }
+
+    /* ─── Brief header ───────────────────────────────────────────────────── */
+    .brief-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .brief-name {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .brief-meta {
+      font-size: 13px;
+      color: rgba(255,255,255,.45);
+    }
+    .brief-meta strong {
+      color: rgba(255,255,255,.65);
+      font-weight: 500;
+    }
+
+    /* ─── Version cards ──────────────────────────────────────────────────── */
+    .versions-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: rgba(255,255,255,.3);
+      margin-bottom: 16px;
+    }
+    .versions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .version-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .version-card:hover {
+      border-color: rgba(46,217,195,.35);
+      box-shadow: 0 0 0 1px rgba(46,217,195,.15), 0 8px 32px rgba(0,0,0,.3);
+    }
+    .version-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .version-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--teal);
+      background: rgba(46,217,195,.12);
+      border: 1px solid rgba(46,217,195,.25);
+      border-radius: 6px;
+      padding: 3px 10px;
+    }
+    .status-dot {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: rgba(255,255,255,.4);
+    }
+    .status-dot::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+    .version-note {
+      font-size: 13px;
+      color: rgba(255,255,255,.6);
+      line-height: 1.5;
+    }
+    .version-date {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,.25);
+    }
+    .version-open {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      background: var(--purple);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.85);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, border-color .2s, color .2s;
+      align-self: flex-start;
+    }
+    .version-open:hover {
+      background: var(--purple-mid);
+      border-color: rgba(255,255,255,.2);
+      color: #fff;
+    }
+    .version-open svg { opacity: .6; }
+
+    /* ─── Empty state ────────────────────────────────────────────────────── */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 50vh;
+      color: rgba(255,255,255,.25);
+      text-align: center;
+      gap: 12px;
+    }
+    .empty-state .icon { font-size: 48px; opacity: .4; }
+    .empty-state p { font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-logo">agile<span>·</span>web</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-sub">web page generator</div>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Briefs</div>
+      <div id="sidebar-list"></div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main" id="main-panel">
+    <div class="empty-state">
+      <div class="icon">📄</div>
+      <p>Selecciona un brief para ver sus versiones</p>
+    </div>
+  </main>
+
+</div>
+
+<script src="portal-data.js"></script>
+<script>
+  const briefs = window.PORTAL.briefs;
+  let active = null;
+
+  // ── Sidebar ──────────────────────────────────────────────────────────────
+  const sidebarList = document.getElementById('sidebar-list');
+
+  briefs.forEach((brief, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'sidebar-item' + (idx === 0 ? ' active' : '');
+    btn.innerHTML = `
+      <span class="sidebar-dot"></span>
+      <span class="sidebar-item-name">${brief.name}</span>
+      <span class="sidebar-item-count">${brief.versions.length}</span>
+    `;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBrief(brief);
+    });
+    sidebarList.appendChild(btn);
+  });
+
+  // ── Render brief ──────────────────────────────────────────────────────────
+  function renderBrief(brief) {
+    const panel = document.getElementById('main-panel');
+
+    const versionsHtml = brief.versions.map(v => `
+      <div class="version-card">
+        <div class="version-top">
+          <span class="version-badge">${v.label}</span>
+          <span class="status-dot">${v.status}</span>
+        </div>
+        <p class="version-note">${v.note}</p>
+        <span class="version-date">${v.date}</span>
+        <a class="version-open" href="${v.path}" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15,3 21,3 21,9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Abrir página
+        </a>
+      </div>
+    `).join('');
+
+    panel.innerHTML = `
+      <div class="brief-header">
+        <div>
+          <div class="brief-name">${brief.name}</div>
+          <div class="brief-meta">
+            ${brief.description}<br>
+            <strong>Cliente:</strong> ${brief.client}
+          </div>
+        </div>
+      </div>
+      <div class="versions-label">Versiones · branches</div>
+      <div class="versions-grid">${versionsHtml}</div>
+    `;
+  }
+
+  // Auto-load first brief
+  if (briefs.length > 0) renderBrief(briefs[0]);
+</script>
+</body>
+</html>

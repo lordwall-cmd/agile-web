@@ -143,7 +143,7 @@ vite.config.ts.timestamp-*
 .vite/
 
 # agile-web generator
-output/
+# output/   ← tracked, not ignored
 template.html
 __pycache__/
 *.pyc
