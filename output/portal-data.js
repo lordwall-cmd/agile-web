@@ -16,6 +16,22 @@ window.PORTAL = {
           status: "live"
         }
       ]
+    },
+    {
+      id: "enzyvault",
+      name: "EnzyVault Bio",
+      description: "DNA-based archival storage — enzymatic stabilization platform",
+      client: "EnzyVault Bio",
+      versions: [
+        {
+          id: "v1",
+          label: "v1",
+          path: "enzyvault/v1.html",
+          date: "2026-05-04",
+          note: "Landing page — platform overview, how it works, dev targets, partner CTA",
+          status: "live"
+        }
+      ]
     }
   ]
 };
