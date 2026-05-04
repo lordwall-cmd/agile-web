@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="{{ meta.lang | default('en') }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ meta.title }}</title>
+  {% if meta.description %}<meta name="description" content="{{ meta.description }}">{% endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #3d1152;
+      background: #fff;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; }
+
+    /* ─── Design Tokens ────────────────────────────────────────────────────── */
+    :root {
+      --purple:      {{ brand.primary_color | default('#3d1152') }};
+      --purple-dark: {{ brand.purple_dark   | default('#15002a') }};
+      --teal:        {{ brand.accent_teal   | default('#2ed9c3') }};
+      --blue:        {{ brand.accent_blue   | default('#00b5e2') }};
+      --white:       #ffffff;
+      --max-width:   1100px;
+    }
+
+    /* ─── Layout Helpers ───────────────────────────────────────────────────── */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .grid { display: grid; gap: 40px; }
+
+    /* ─── Buttons ──────────────────────────────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      border-radius: 28px;
+      border: 3px solid var(--blue);
+      background: var(--blue);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .btn:hover {
+      background: transparent;
+      color: var(--blue);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--blue);
+    }
+    .btn-outline:hover {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    /* ─── Header / Nav ─────────────────────────────────────────────────────── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--purple);
+    }
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      height: 70px;
+      gap: 32px;
+    }
+    .nav-logo img {
+      height: 40px;
+      width: auto;
+    }
+    .nav-logo-text {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: .5px;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 4px;
+      margin-left: auto;
+    }
+    .nav-links a {
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 4px;
+      transition: color .2s, background .2s;
+      display: block;
+      position: relative;
+    }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-links li { position: relative; }
+    .nav-links .has-children > a::after {
+      content: ' ▾';
+      font-size: 10px;
+    }
+    .nav-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--white);
+      border-radius: 6px;
+      min-width: 200px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+      list-style: none;
+      padding: 8px 0;
+    }
+    .nav-links .has-children:hover .nav-dropdown { display: block; }
+    .nav-dropdown a {
+      color: var(--purple);
+      font-size: 13px;
+      padding: 8px 18px;
+      display: block;
+      border-radius: 0;
+    }
+    .nav-dropdown a:hover { background: #f5eeff; color: var(--purple); }
+    .nav-cta {
+      margin-left: 12px;
+    }
+    .nav-cta .btn {
+      padding: 8px 20px;
+      font-size: 13px;
+    }
+
+    /* ─── Hero ─────────────────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%);
+      {% if hero.bg_image %}
+      background-image: linear-gradient(135deg, rgba(61,17,82,.85) 0%, rgba(21,0,42,.90) 100%),
+                        url('{{ hero.bg_image }}');
+      background-size: cover;
+      background-position: center;
+      {% endif %}
+      padding: 80px 0 70px;
+    }
+    .hero .container {
+      max-width: 800px;
+    }
+    .hero-label {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 2;
+      margin-bottom: 4px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.05;
+    }
+    .hero h1 + h1 { margin-top: 2px; }
+
+    /* ─── Content Section ──────────────────────────────────────────────────── */
+    .content-section {
+      background: var(--purple);
+      padding: 60px 0;
+    }
+    .content-inner {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .content-image img {
+      border-radius: 12px;
+      width: 100%;
+    }
+    .content-text p {
+      color: var(--white);
+      font-size: 15px;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .content-text p a {
+      color: var(--teal);
+      font-weight: 600;
+    }
+    .content-text p a:hover { text-decoration: underline; }
+    .content-text .btn { margin-top: 12px; }
+
+    /* ─── Data Section ─────────────────────────────────────────────────────── */
+    .data-section {
+      padding: 70px 0;
+      background: var(--white);
+    }
+    .data-section h2 {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 40px;
+    }
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 36px;
+    }
+    .data-card {
+      border: 1px solid #ede0f5;
+      border-radius: 12px;
+      padding: 28px 24px 24px;
+    }
+    .data-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .data-card img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 14px;
+    }
+    .data-card p {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    /* ─── Resources Section ────────────────────────────────────────────────── */
+    .resources-section {
+      padding: 60px 0;
+      background: #f9f5ff;
+    }
+    .resources-section h2 {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 36px;
+    }
+    .resource-group {
+      margin-bottom: 28px;
+    }
+    .resource-type {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 10px;
+    }
+    .resource-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--purple);
+      font-weight: 600;
+      font-size: 15px;
+      transition: color .2s;
+    }
+    .resource-link:hover { color: var(--blue); }
+    .resource-link svg { flex-shrink: 0; }
+
+    /* ─── CTA Banner ───────────────────────────────────────────────────────── */
+    .cta-banner {
+      background: var(--purple);
+      padding: 72px 40px;
+      text-align: center;
+    }
+    .cta-banner .cta-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 18px;
+    }
+    .cta-banner .cta-title .highlight {
+      color: var(--teal);
+    }
+    .cta-banner .cta-body {
+      font-size: 15px;
+      color: rgba(255,255,255,.85);
+      max-width: 640px;
+      margin: 0 auto 32px;
+      line-height: 1.75;
+    }
+
+    /* ─── Footer ───────────────────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--purple-dark);
+      color: rgba(255,255,255,.7);
+      padding: 56px 0 28px;
+    }
+    .footer-cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-col-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul a {
+      color: rgba(255,255,255,.65);
+      font-size: 13px;
+      transition: color .2s;
+    }
+    .footer-col ul a:hover { color: var(--teal); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-copyright {
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .footer-legal {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    .footer-legal a {
+      color: rgba(255,255,255,.5);
+      font-size: 12px;
+      transition: color .2s;
+    }
+    .footer-legal a:hover { color: var(--teal); }
+
+    /* ─── Mobile ───────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+      .nav-inner { padding: 0 20px; }
+      .nav-links { display: none; }
+      .content-inner { grid-template-columns: 1fr; }
+      .hero { padding: 60px 0 50px; }
+      .data-section h2, .resources-section h2 { font-size: 24px; }
+      .cta-banner { padding: 52px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ──────────────────────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="nav-inner">
+    {% if brand.logo_url %}
+    <a class="nav-logo" href="{{ brand.home_url | default('/') }}">
+      <img src="{{ brand.logo_url }}" alt="{{ brand.name }}">
+    </a>
+    {% else %}
+    <a class="nav-logo-text" href="{{ brand.home_url | default('/') }}">{{ brand.name }}</a>
+    {% endif %}
+
+    <ul class="nav-links">
+      {% for link in nav.links %}
+      <li class="{% if link.children is defined and link.children %}has-children{% endif %}">
+        <a href="{{ link.url }}">{{ link.label }}</a>
+        {% if link.children is defined and link.children %}
+        <ul class="nav-dropdown">
+          {% for child in link.children %}
+          <li><a href="{{ child.url }}">{{ child.label }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% if nav.cta is defined %}
+    <div class="nav-cta">
+      <a href="{{ nav.cta.url }}" class="btn">{{ nav.cta.label }}</a>
+    </div>
+    {% endif %}
+  </div>
+</header>
+
+<!-- ─── HERO ─────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-label">{{ hero.category_label }}</p>
+    <h1>{{ hero.title_line1 }}</h1>
+    <h1>{{ hero.title_line2 }}</h1>
+  </div>
+</section>
+
+<!-- ─── CONTENT ──────────────────────────────────────────────────────────── -->
+<section class="content-section">
+  <div class="container">
+    <div class="content-inner">
+      <div class="content-image">
+        <img src="{{ content.image_url }}" alt="{{ content.image_alt | default('') }}">
+      </div>
+      <div class="content-text">
+        {% for para in content.paragraphs %}
+        <p>{{ para | safe }}</p>
+        {% endfor %}
+        {% if content.cta is defined %}
+        <a href="{{ content.cta.url }}" class="btn">{{ content.cta.label }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PERFORMANCE DATA ──────────────────────────────────────────────────── -->
+{% if data_section is defined and data_section %}
+<section class="data-section">
+  <div class="container">
+    <h2>{{ data_section.title }}</h2>
+    <div class="data-grid">
+      {% for item in data_section.items %}
+      <div class="data-card">
+        <h3>{{ item.title }}</h3>
+        {% if item.image_url %}<img src="{{ item.image_url }}" alt="{{ item.title }}">{% endif %}
+        <p>{{ item.caption }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ─── RESOURCES ─────────────────────────────────────────────────────────── -->
+{% if resources is defined and resources %}
+<section class="resources-section">
+  <div class="container">
+    <h2>{{ resources.title }}</h2>
+    {% for item in resources.items %}
+    <div class="resource-group">
+      <p class="resource-type">{{ item.type }}</p>
+      <a href="{{ item.url }}" class="resource-link" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="22" fill="{{ brand.accent_blue | default('#00b5e2') }}" aria-hidden="true">
+          <path d="M256 0a256 256 0 1 0 0 512A256 256 0 1 0 256 0zM127 281c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l71 71L232 136c0-13.3 10.7-24 24-24s24 10.7 24 24l0 182.1 71-71c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L273 393c-9.4 9.4-24.6 9.4-33.9 0L127 281z"/>
+        </svg>
+        {{ item.label }}
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- ─── CTA BANNER ────────────────────────────────────────────────────────── -->
+{% if cta_banner is defined and cta_banner %}
+<section class="cta-banner">
+  <p class="cta-title">
+    {{ cta_banner.title_before }}
+    <span class="highlight">{{ cta_banner.title_highlight }}</span>
+    {{ cta_banner.title_after }}
+  </p>
+  <p class="cta-body">{{ cta_banner.body }}</p>
+  <a href="{{ cta_banner.button_url }}" class="btn">{{ cta_banner.button_label }}</a>
+</section>
+{% endif %}
+
+<!-- ─── FOOTER ────────────────────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="container">
+    {% if footer.columns is defined and footer.columns %}
+    <div class="footer-cols">
+      {% for col in footer.columns %}
+      <div class="footer-col">
+        <p class="footer-col-title">{{ col.title }}</p>
+        <ul>
+          {% for link in col.links %}
+          <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="footer-bottom">
+      <p class="footer-copyright">{{ footer.copyright }}</p>
+      {% if footer.legal_links is defined and footer.legal_links %}
+      <ul class="footer-legal">
+        {% for link in footer.legal_links %}
+        <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

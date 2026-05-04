@@ -141,3 +141,9 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# agile-web generator
+output/
+template.html
+__pycache__/
+*.pyc

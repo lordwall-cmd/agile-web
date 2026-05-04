@@ -1,0 +1,156 @@
+# ─── Page metadata ────────────────────────────────────────────────────────────
+meta:
+  title: "Controlled DNA and RNA Enzymatic Synthesis | Custom TdT Solutions"
+  description: "Blikka Genomics offers a diverse portfolio of six proprietary TdT enzymes for controlled DNA and RNA enzymatic synthesis."
+  lang: "en"
+
+# ─── Brand ────────────────────────────────────────────────────────────────────
+brand:
+  name: "Kura Biotech"
+  logo_url: "https://www.kurabiotech.com/hubfs/Logo%20Kura%20Biotech%20negativo.svg"
+  home_url: "https://www.kurabiotech.com"
+  primary_color: "#3d1152"
+  purple_dark: "#15002a"
+  accent_teal: "#2ed9c3"
+  accent_blue: "#00b5e2"
+
+# ─── Navigation ───────────────────────────────────────────────────────────────
+nav:
+  links:
+    - label: "Products"
+      url: "/products"
+      children:
+        - label: "TdT Enzymes"
+          url: "/products/tdt-enzymes"
+        - label: "DNA Synthesis"
+          url: "/products/dna-synthesis"
+    - label: "Applications"
+      url: "/applications"
+    - label: "Resources"
+      url: "/resources"
+    - label: "About"
+      url: "/about"
+  cta:
+    label: "Contact us"
+    url: "/contact"
+
+# ─── Hero ─────────────────────────────────────────────────────────────────────
+hero:
+  category_label: "APPLICATIONS:"
+  title_line1: "DNA and RNA"
+  title_line2: "Enzymatic Synthesis"
+  # bg_image: "https://example.com/hero-bg.jpg"   # optional background image
+
+# ─── Content section ──────────────────────────────────────────────────────────
+content:
+  image_url: "https://www.kurabiotech.com/hubfs/blikka_destello.png"
+  image_alt: "Blikka Genomics TdT Enzyme"
+  paragraphs:
+    - >
+      Controlled DNA and RNA enzymatic synthesis is an advanced technique that
+      allows for the precise creation of sequences by using specific enzymes
+      to add nucleotides under monitored conditions,
+      ensuring control over the length and composition of the sequence.
+    - >
+      One of the enzymes for enzymatic DNA synthesis is Terminal deoxynucleotidyl
+      transferase (TdT). This enzyme has proven to be a reliable tool for synthesizing
+      DNA without a template. TdT enzymes add nucleotides to the 3' end of a DNA
+      molecule, enabling the construction of custom DNA/RNA driving advanced
+      applications.
+    - >
+      Commercially available TdT enzymes are not optimized for non-native nucleotide
+      analogs required for the controlled synthesis.
+      <a href="https://www.kurabiotech.com/blikka-genomics">Blikka Genomics</a>
+      offers a diverse portfolio of six proprietary
+      <a href="https://www.kurabiotech.com/blikka-genomics/tdt-enzymes">Terminal
+      Deoxynucleotidyl Transferase (TdT) enzymes</a> derived from artificial
+      chimeric origins and designed for high coupling efficiency with both natural
+      and modified nucleotides.
+  cta:
+    label: "Learn more about TdT"
+    url: "/blikka-genomics/tdt-enzymes"
+
+# ─── Performance data section (optional — remove block to hide) ───────────────
+data_section:
+  title: "Performance Data"
+  items:
+    - title: "Incorporation of DNA Natural Nucleotides"
+      image_url: "https://www.kurabiotech.com/hubfs/tdt_dna_natural.png"
+      caption: >
+        Addition of natural deoxyribonucleotides. Enzymes were incubated with
+        a 1:10 oligo:dNTP ratio for 1 minute at 37°C.
+    - title: "Incorporation of DNA-Modified Nucleotides"
+      image_url: "https://www.kurabiotech.com/hubfs/tdt_dna_modified.png"
+      caption: >
+        Addition of modified nucleotides. Enzymes were incubated with a 1:10
+        oligo:dNTP ratio for 30 minutes at 37°C. Bovine TdT shown as reference.
+    - title: "Incorporation of RNA Natural Nucleotides"
+      image_url: "https://www.kurabiotech.com/hubfs/tdt_rna_natural.png"
+      caption: >
+        Addition of natural ribonucleotides. Enzymes were incubated with a 1:10
+        oligo:dNTP ratio for 30 minutes at 37°C.
+
+# ─── Resources section (optional — remove block to hide) ──────────────────────
+resources:
+  title: "Resources"
+  items:
+    - type: "Technical Data Sheet"
+      label: "TdT Synthesis Panel TDS"
+      url: "https://www.kurabiotech.com/hubfs/TDS_TdT_Synthesis_Panel.pdf"
+    - type: "Brochure"
+      label: "TdT Synthesis Panel Brochure"
+      url: "https://www.kurabiotech.com/hubfs/Brochure_TdT_Synthesis_Panel.pdf"
+    - type: "Poster"
+      label: "TdT Synthesis Panel Poster"
+      url: "https://www.kurabiotech.com/hubfs/Poster_TdT_Synthesis_Panel.pdf"
+
+# ─── CTA banner ───────────────────────────────────────────────────────────────
+cta_banner:
+  title_before: "Ready to"
+  title_highlight: "transform"
+  title_after: "your synthesis process"
+  body: >
+    Take the first step towards customizing TdT enzymes for your DNA and RNA
+    synthesis needs. Leverage our proprietary TdT Synthesis Panel and partner
+    with our expert team through the Accel TdT Program to create tailored
+    solutions for your specific requirements.
+  button_label: "Contact us"
+  button_url: "/contact"
+
+# ─── Footer ───────────────────────────────────────────────────────────────────
+footer:
+  copyright: "© 2026 Kura Biotech. All rights reserved."
+  legal_links:
+    - label: "Privacy Policy"
+      url: "/privacy"
+    - label: "Terms of Use"
+      url: "/terms"
+  columns:
+    - title: "Our Company"
+      links:
+        - label: "About us"
+          url: "/about"
+        - label: "Positive Impact"
+          url: "/impact"
+        - label: "Contact us"
+          url: "/contact"
+        - label: "Careers"
+          url: "/careers"
+        - label: "In the News"
+          url: "/news"
+        - label: "Quality and Certifications"
+          url: "/quality"
+    - title: "Our Brands"
+      links:
+        - label: "Blikka Genomics"
+          url: "/blikka-genomics"
+        - label: "Kura Enzymes"
+          url: "/kura-enzymes"
+    - title: "Resources"
+      links:
+        - label: "Technical Documents"
+          url: "/resources/technical"
+        - label: "Publications"
+          url: "/resources/publications"
+        - label: "Webinars"
+          url: "/resources/webinars"
